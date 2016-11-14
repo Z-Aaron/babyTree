@@ -27,7 +27,7 @@ public class HomeActivity extends BaseActivity {
     private BottomNavigationView mBottomNavigationView;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         mBottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation_view);
