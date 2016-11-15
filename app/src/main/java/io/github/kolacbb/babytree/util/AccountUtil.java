@@ -1,5 +1,7 @@
 package io.github.kolacbb.babytree.util;
 
+import android.text.TextUtils;
+
 import com.google.gson.Gson;
 
 import io.github.kolacbb.babytree.model.Account;
@@ -26,10 +28,7 @@ public class AccountUtil {
             synchronized (AccountUtil.class) {
                 if (mAccount == null) {
                     String json = SpUtils.find(ACCOUNT_INFO);
-                    Account account = mGson.fromJson(json, Account.class);
-                    if (account.getId() != null) {
-                        mAccount = account;
-                    }
+                    mAccount = mGson.fromJson(json, Account.class);
                 }
             }
         }
