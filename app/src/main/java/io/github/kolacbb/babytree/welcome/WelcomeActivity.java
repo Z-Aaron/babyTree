@@ -1,67 +1,92 @@
 package io.github.kolacbb.babytree.welcome;
 
+import android.app.FragmentTransaction;
+import android.graphics.drawable.AnimatedVectorDrawable;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
-
-import com.google.gson.Gson;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+import android.widget.Button;
+import android.widget.ImageView;
 
 import io.github.kolacbb.babytree.R;
-import io.github.kolacbb.babytree.model.Account;
-import io.github.kolacbb.babytree.net.RetrofitManager;
-import io.github.kolacbb.babytree.net.service.AccountService;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
-public class WelcomeActivity extends AppCompatActivity {
+public class WelcomeActivity extends AppCompatActivity implements View.OnClickListener {
+    private static final String TAG = WelcomeActivity.class.getSimpleName();
 
-    private EditText mEmailText;
-    private EditText mPasswordText;
+    private Button mPositiveBtn;
+    private Button mNegativeBtn;
+    private AccountFragment mAccountFragment = null;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
-        mEmailText = (EditText) findViewById(R.id.text_input_email);
-        mPasswordText = (EditText) findViewById(R.id.text_input_password);
+        initView();
+
+        // Wire up the fragment
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.welcome_content, new IntroduceFragment());
+        fragmentTransaction.commit();
+
+        setupAnimation();
     }
 
-    public void onButtonClicked(View v) {
-        switch (v.getId()) {
-            case R.id.login:
-                login();
+    private void setupAnimation() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            ImageView iv = (ImageView) findViewById(R.id.logo);
+            AnimatedVectorDrawable logoAnim = (AnimatedVectorDrawable) getDrawable(R.drawable.io_logo_white_anim);
+            iv.setImageDrawable(logoAnim);
+            logoAnim.start();
+        }
+    }
+
+    public void setPositiveButtonText(String str) {
+        mPositiveBtn.setText(str);
+    }
+
+    public void setNegativeButtonText(String str) {
+        mNegativeBtn.setText(str);
+    }
+
+    private void initView() {
+        mNegativeBtn = (Button) findViewById(R.id.button_decline);
+        mPositiveBtn = (Button) findViewById(R.id.button_accept);
+        mNegativeBtn.setOnClickListener(this);
+        mPositiveBtn.setOnClickListener(this);
+        setPositiveButtonText("下一步");
+        setNegativeButtonText("取消");
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.button_accept:
+                if (mAccountFragment == null) {
+                    mAccountFragment = new AccountFragment();
+                    getFragmentManager().beginTransaction()
+                            .replace(R.id.welcome_content, mAccountFragment)
+                            .addToBackStack(null)
+                            .commit();
+                } else {
+                    mAccountFragment.onPositiveButtonClicked();
+                }
+                break;
+            case R.id.button_decline:
+                if (mAccountFragment == null) {
+                    finish();
+                } else {
+                    mAccountFragment.onNegativeButtonClicked();
+                }
                 break;
         }
     }
 
-    public void login() {
-        String emailJson = "%7B%22name%22:%22" + mEmailText.getText().toString() + "%22%7D";
-//        try {
-//            emailJson = URLEncoder.encode(emailJson, "UTF-8");
-//        } catch (UnsupportedEncodingException e) {
-//            e.printStackTrace();
-//        }
-
-        Log.e("EMAIL JSON:", emailJson);
-        AccountService service = RetrofitManager.getInstance().create(AccountService.class);
-        Call<Account> call = service.query(emailJson);
-        call.enqueue(new Callback<Account>() {
-            @Override
-            public void onResponse(Call<Account> call, Response<Account> response) {
-                Gson gson = new Gson();
-                Log.e("ACCOUNT:", gson.toJson(response.body()));
-            }
-
-            @Override
-            public void onFailure(Call<Account> call, Throwable throwable) {
-
-            }
-        });
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        mAccountFragment = null;
+        setPositiveButtonText("下一步");
+        setNegativeButtonText("取消");
     }
 }
