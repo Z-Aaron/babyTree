@@ -1,10 +1,13 @@
 package io.github.kolacbb.babytree.model;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by kolab on 2016/11/13.
  */
 
 public class Account {
+    @SerializedName("objectId")
     private String id;
     private String name;
     private String email;
