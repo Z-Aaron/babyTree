@@ -27,6 +27,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import io.github.kolacbb.babytree.R;
 import io.github.kolacbb.babytree.model.Account;
 import io.github.kolacbb.babytree.model.ResponsBody;
@@ -145,10 +147,10 @@ public class AccountFragment extends Fragment {
     private void signUp(String email, String password, String name, String desc) {
         // 待注册账号，返回结果只返回objectId，不必再次访问网络
         final Account account = new Account();
-        account.setName(name);
         account.setEmail(email);
         account.setPassword(password);
-        account.setEmail(desc);
+        account.setName(name);
+        account.setDesc(desc);
 
         String accountJson = new BmobRequestJsonBuilder()
                 .put("email", email)
@@ -157,7 +159,9 @@ public class AccountFragment extends Fragment {
                 .put("desc", desc)
                 .build();
 
-        Log.e(TAG, "signUp: " + accountJson);
+        Gson gson = new Gson();
+        Log.e(TAG, "signUp, accountJson: " + accountJson);
+        Log.e(TAG, "signUp, gson: " + gson.toJson(account));
 
         RetrofitManager.create(AccountService.class)
                 .signup(account)

@@ -7,16 +7,7 @@ import java.util.Date;
  */
 
 public class ResponsBody {
-    private Date createdAt;
     private String objectId;
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
 
     public String getObjectId() {
         return objectId;

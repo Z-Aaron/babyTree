@@ -2,11 +2,14 @@ package io.github.kolacbb.babytree.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+import java.util.Date;
+
 /**
  * Created by kolab on 2016/11/13.
  */
 
-public class Account {
+public class Account implements Serializable{
     @SerializedName("objectId")
     private String id;
     private String name;

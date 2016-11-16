@@ -25,11 +25,11 @@ public interface AccountService {
 
     /**
      * 新建账户
-     * @param accountJson
+     * @param account
      * @return
      */
     @POST("/1/classes/account")
-    Call<ResponsBody> signup(@Body Account accountJson);
+    Call<ResponsBody> signup(@Body Account account);
 
 
 }

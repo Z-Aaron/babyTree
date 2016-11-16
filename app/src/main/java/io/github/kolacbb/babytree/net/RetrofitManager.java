@@ -43,7 +43,6 @@ public class RetrofitManager {
 
                     // Request customization: add request headers
                     Request.Builder requestBuilder = original.newBuilder()
-                            .post(null)
                             .addHeader("X-Bmob-Application-Id", BMOB_APPLICATION_ID)
                             .addHeader("X-Bmob-REST-API-Key", BMOB_API_KEY)
                             .addHeader("Content-Type", "application/json");
