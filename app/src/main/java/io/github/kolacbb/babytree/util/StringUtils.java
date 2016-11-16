@@ -8,6 +8,12 @@ import java.net.URLEncoder;
  */
 
 public class StringUtils {
+
+    public static String bombEncode(String str) {
+        // Bmob 缺陷。防止bmob更改传输数据编码
+        return encodeGB2312(str);
+    }
+
     public static String encodeGB2312(String str) {
         try {
             return URLEncoder.encode(str, "GB2312");
