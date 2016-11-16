@@ -16,8 +16,11 @@
 package io.github.kolacbb.babytree.welcome;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +28,18 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import io.github.kolacbb.babytree.R;
+import io.github.kolacbb.babytree.model.Account;
+import io.github.kolacbb.babytree.model.ResponsBody;
+import io.github.kolacbb.babytree.model.Result;
+import io.github.kolacbb.babytree.net.RetrofitManager;
+import io.github.kolacbb.babytree.net.service.AccountService;
+import io.github.kolacbb.babytree.ui.activity.HomeActivity;
+import io.github.kolacbb.babytree.util.AccountUtil;
+import io.github.kolacbb.babytree.util.BmobRequestJsonBuilder;
+import io.github.kolacbb.babytree.util.StringUtils;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AccountFragment extends Fragment {
     private static final String TAG = AccountFragment.class.getSimpleName();
@@ -60,7 +75,13 @@ public class AccountFragment extends Fragment {
 
     public void onPositiveButtonClicked() {
         if (mState == SIGN_UP_MODE) {
-            Toast.makeText(getActivity(), "注册", Toast.LENGTH_SHORT).show();
+            if (!TextUtils.isEmpty(mEmailText.getText().toString())
+                    && !TextUtils.isEmpty(mPasswordText.getText().toString())) {
+                signUp(mEmailText.getText().toString(), mPasswordText.getText().toString(),
+                        mNameText.getText().toString(), mDescText.getText().toString());
+            } else {
+                Toast.makeText(getActivity(), "账号或密码不能为空", Toast.LENGTH_SHORT).show();
+            }
         } else {
             mState = SIGN_UP_MODE;
             updateViewState();
@@ -69,7 +90,12 @@ public class AccountFragment extends Fragment {
 
     public void onNegativeButtonClicked() {
         if (mState == LOGIN_MODE) {
-            Toast.makeText(getActivity(), "登录", Toast.LENGTH_SHORT).show();
+            if (!TextUtils.isEmpty(mEmailText.getText().toString())
+                    && !TextUtils.isEmpty(mPasswordText.getText().toString())) {
+                login(mEmailText.getText().toString(), mPasswordText.getText().toString());
+            } else {
+                Toast.makeText(getActivity(), "账号或密码不能为空", Toast.LENGTH_SHORT).show();
+            }
         } else {
             mState = LOGIN_MODE;
             updateViewState();
@@ -85,5 +111,72 @@ public class AccountFragment extends Fragment {
             mNameText.setVisibility(View.VISIBLE);
             mDescText.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void login(String email, String password) {
+        String queryJson = new BmobRequestJsonBuilder()
+                .put("email", email)
+                .put("password", password)
+                .build();
+
+        RetrofitManager.create(AccountService.class)
+                .query(StringUtils.bombEncode(queryJson))
+                .enqueue(new Callback<Result<Account>>() {
+                    @Override
+                    public void onResponse(Call<Result<Account>> call, Response<Result<Account>> response) {
+                        Result<Account> result = response.body();
+                        if (result.getResults() == null || result.getResults().size() == 0) {
+                            Toast.makeText(getActivity(), "账号密码不匹配", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        Account account = result.getResults().get(0);
+                        AccountUtil.saveAccount(account);
+                        startActivity(new Intent(getActivity(), HomeActivity.class));
+                        getActivity().finish();
+                    }
+
+                    @Override
+                    public void onFailure(Call<Result<Account>> call, Throwable throwable) {
+                        Toast.makeText(getActivity(), "请求网络失败", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void signUp(String email, String password, String name, String desc) {
+        // 待注册账号，返回结果只返回objectId，不必再次访问网络
+        final Account account = new Account();
+        account.setName(name);
+        account.setEmail(email);
+        account.setPassword(password);
+        account.setEmail(desc);
+
+        String accountJson = new BmobRequestJsonBuilder()
+                .put("email", email)
+                .put("password", password)
+                .put("name", name)
+                .put("desc", desc)
+                .build();
+
+        Log.e(TAG, "signUp: " + accountJson);
+
+        RetrofitManager.create(AccountService.class)
+                .signup(account)
+                .enqueue(new Callback<ResponsBody>() {
+                    @Override
+                    public void onResponse(Call<ResponsBody> call, Response<ResponsBody> response) {
+                        ResponsBody body = response.body();
+                        if (body == null) {
+                            Toast.makeText(getActivity(), "注册失败", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        account.setId(body.getObjectId());
+                        AccountUtil.saveAccount(account);
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponsBody> call, Throwable throwable) {
+                        Toast.makeText(getActivity(), "请求网络失败", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }
