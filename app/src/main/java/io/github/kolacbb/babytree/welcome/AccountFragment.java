@@ -25,6 +25,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import io.github.kolacbb.babytree.R;
+import io.github.kolacbb.babytree.util.ValidateUtils;
 
 public class AccountFragment extends Fragment {
     private static final String TAG = AccountFragment.class.getSimpleName();
@@ -60,7 +61,17 @@ public class AccountFragment extends Fragment {
 
     public void onPositiveButtonClicked() {
         if (mState == SIGN_UP_MODE) {
-            Toast.makeText(getActivity(), "注册", Toast.LENGTH_SHORT).show();
+
+           if (!ValidateUtils.validateEmail(mEmailText.getText()+"")){
+               Toast.makeText(getActivity(), "邮箱格式不正确！", Toast.LENGTH_SHORT).show();
+           }else if (!ValidateUtils.validatePassWord(mPasswordText.getText()+"")){
+               Toast.makeText(getActivity(), "密码格式不正确！", Toast.LENGTH_SHORT).show();
+           }else if (!ValidateUtils.validateUserName(mNameText.getText()+"")){
+               Toast.makeText(getActivity(), "用户名格式不正确！", Toast.LENGTH_SHORT).show();
+           }else {
+               Toast.makeText(getActivity(), "注册", Toast.LENGTH_SHORT).show();
+           }
+
         } else {
             mState = SIGN_UP_MODE;
             updateViewState();
@@ -70,6 +81,7 @@ public class AccountFragment extends Fragment {
     public void onNegativeButtonClicked() {
         if (mState == LOGIN_MODE) {
             Toast.makeText(getActivity(), "登录", Toast.LENGTH_SHORT).show();
+
         } else {
             mState = LOGIN_MODE;
             updateViewState();
