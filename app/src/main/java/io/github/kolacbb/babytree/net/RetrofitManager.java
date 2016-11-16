@@ -3,9 +3,12 @@ package io.github.kolacbb.babytree.net;
 import java.io.IOException;
 
 import okhttp3.Interceptor;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
+import okio.BufferedSink;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -35,8 +38,12 @@ public class RetrofitManager {
                 @Override
                 public Response intercept(Chain chain) throws IOException {
                     Request original = chain.request();
+
+                    final RequestBody requestBody = RequestBody.create(MediaType.parse("application/x-www-form-urlencoded;charset=gb2312"), "");
+
                     // Request customization: add request headers
                     Request.Builder requestBuilder = original.newBuilder()
+                            .post(null)
                             .addHeader("X-Bmob-Application-Id", BMOB_APPLICATION_ID)
                             .addHeader("X-Bmob-REST-API-Key", BMOB_API_KEY)
                             .addHeader("Content-Type", "application/json");
@@ -60,5 +67,9 @@ public class RetrofitManager {
                     .build();
         }
         return sRetrofit;
+    }
+
+    public static  <T> T create(final Class<T> service) {
+        return getInstance().create(service);
     }
 }

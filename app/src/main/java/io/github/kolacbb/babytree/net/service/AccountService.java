@@ -29,7 +29,7 @@ public interface AccountService {
      * @return
      */
     @POST("/1/classes/account")
-    Call<ResponsBody> signup(@Body String accountJson);
+    Call<ResponsBody> signup(@Body Account accountJson);
 
 
 }
