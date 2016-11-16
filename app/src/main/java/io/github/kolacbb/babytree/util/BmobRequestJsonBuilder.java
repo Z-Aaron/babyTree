@@ -10,6 +10,8 @@ public class BmobRequestJsonBuilder {
 
     public BmobRequestJsonBuilder put(String value, String key) {
         if (json.charAt(json.length() - 1) == '\"') {
+            json += ",\""+value +"\":\"" + key + "\"";
+        } else {
             json += "\""+value +"\":\"" + key + "\"";
         }
         return this;
