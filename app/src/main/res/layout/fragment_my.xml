@@ -1,9 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="myFragment" />
-</LinearLayout>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:background="#e7e7e7"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="5dp"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/user_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:src="@mipmap/ic_launcher"/>
+
+                <TextView
+                    android:id="@+id/user_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_toRightOf="@id/user_img"
+                    android:text="你的名字"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/user_name"
+                    android:layout_below="@id/user_name"
+                    android:text="我的介绍"/>
+
+            </RelativeLayout>
+
+            <include layout="@layout/divider_line_big"/>
+
+            <TextView
+                style="@style/ListItemAppearance"
+                android:text="哈哈"/>
+
+            <include layout="@layout/divider_line_small_margin_start"/>
+
+            <TextView
+                style="@style/ListItemAppearance"
+                android:text="哈哈"/>
+
+            <include layout="@layout/divider_line_small_margin_start"/>
+
+            <TextView
+                style="@style/ListItemAppearance"
+                android:text="哈哈"/>
+
+            <include layout="@layout/divider_line_small_margin_start"/>
+
+            <TextView
+                style="@style/ListItemAppearance"
+                android:text="哈哈"/>
+
+            <include layout="@layout/divider_line_small_margin_start"/>
+
+            <TextView
+                style="@style/ListItemAppearance"
+                android:text="哈哈"/>
+
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>
