@@ -28,4 +28,15 @@
         <item name="android:textColor">?android:textColorSecondary</item>
     </style>
 
+    <style name="ListItemAppearance">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:background">@color/app_white</item>
+        <item name="android:layout_height">56dp</item>
+        <item name="android:drawablePadding">20dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:drawableLeft">@mipmap/ic_launcher</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/app_body_text_1</item>
+    </style>
+
 </resources>
