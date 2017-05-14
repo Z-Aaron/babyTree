@@ -10,6 +10,9 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        ndk {
+            abiFilters 'armeabi'
+        }
     }
     buildTypes {
         release {
@@ -29,4 +32,13 @@ dependencies {
     compile 'com.android.support:cardview-v7:' + supportVersion
     compile 'com.android.support:appcompat-v7:' + supportVersion
     testCompile 'junit:junit:4.12'
+
+    // 第三方库
+
+    // 腾讯 bugly
+    compile 'com.tencent.bugly:crashreport:latest.release'
+    compile 'com.tencent.bugly:nativecrashreport:latest.release'
+
+    // 图片选择库
+    compile 'com.lzy.widget:imagepicker:0.5.5'
 }

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".welcome.AccountFragment"
     android:orientation="vertical"
     android:padding="@dimen/welcome_content_padding">
@@ -14,6 +14,8 @@
         android:layout_height="wrap_content">
         <EditText
             android:id="@+id/name"
+            android:maxLength="8"
+            android:maxLines="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </android.support.design.widget.TextInputLayout>
@@ -24,6 +26,7 @@
         android:layout_height="wrap_content">
         <EditText
             android:id="@+id/email"
+            android:inputType="textEmailAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </android.support.design.widget.TextInputLayout>
@@ -34,12 +37,15 @@
         android:layout_height="wrap_content">
     <EditText
         android:id="@+id/password"
+        android:inputType="textWebPassword"
+        android:maxLines="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:hint="desc"
+        app:counterMaxLength="100"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     <EditText
