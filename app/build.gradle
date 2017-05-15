@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 def supportVersion = "25.0.0"
 android {
     compileSdkVersion 25
-    buildToolsVersion supportVersion
+    buildToolsVersion '25.0.3'
     defaultConfig {
         applicationId "io.github.kolacbb.babytree"
         minSdkVersion 16
