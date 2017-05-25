@@ -11,7 +11,7 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
-            abiFilters 'armeabi'
+            abiFilters 'x86'
         }
     }
     buildTypes {
@@ -36,8 +36,8 @@ dependencies {
     // 第三方库
 
     // 腾讯 bugly
-    compile 'com.tencent.bugly:crashreport:latest.release'
-    compile 'com.tencent.bugly:nativecrashreport:latest.release'
+//    compile 'com.tencent.bugly:crashreport:latest.release'
+//    compile 'com.tencent.bugly:nativecrashreport:latest.release'
 
     // 图片选择库
     compile 'com.lzy.widget:imagepicker:0.5.5'

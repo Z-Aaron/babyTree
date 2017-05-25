@@ -13,6 +13,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
+ * 该类为单例类，该类业务端统一调用使用该类进行网络请求，
+ * 获取Service实例便于统一管理网络请求方式。
  * Created by kolab on 2016/11/5.
  */
 
@@ -31,6 +33,12 @@ public class RetrofitManager {
     private static Interceptor sInterceptor;
     private static Retrofit sRetrofit;
 
+    /**
+     * 想要获取Retrofit实例，只能通过该方法获取Retrofit实例。
+     * 该方法中，统一为每一个retrofit请求添加上token，即bomb请求key
+     * 设置application id， 添加retrofit api key，设置请求体格式
+     * @return
+     */
     public static Retrofit getInstance() {
 
         if (sInterceptor == null) {
@@ -68,6 +76,14 @@ public class RetrofitManager {
         return sRetrofit;
     }
 
+    /**
+     * 业务方法通过该静态方法，传入与服务端协议好的好的service类，进行业务请求
+     * 统一网络请求的方式。
+     * @param service 与服务端歇息好的service类
+     * @param <T> 服务端返回的java bean类，retrofit 将服务端传回的数据直接解析为bean类
+     *           供业务端使用
+     * @return retrofit解析好了的bean类
+     */
     public static  <T> T create(final Class<T> service) {
         return getInstance().create(service);
     }

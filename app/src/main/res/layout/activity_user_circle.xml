@@ -6,11 +6,14 @@
     <ImageView
         android:id="@+id/circle_bg"
         android:background="#999999"
+        android:src="@drawable/img_circlebg"
+        android:scaleType="fitXY"
         android:layout_width="match_parent"
         android:layout_height="200dp" />
 
     <ImageView
         android:id="@+id/user_img"
+        android:visibility="gone"
         android:src="@mipmap/ic_launcher"
         android:layout_marginRight="16dp"
         android:layout_width="56dp"
@@ -22,9 +25,14 @@
 
     <TextView
         android:id="@+id/user_name"
-        android:text="张东"
         android:layout_toLeftOf="@id/user_img"
-        android:layout_alignBaseline="@id/user_img"
+        android:layout_alignBottom="@id/user_img"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+    <ListView
+        android:id="@+id/list_view"
+        android:layout_below="@id/circle_bg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 </RelativeLayout>

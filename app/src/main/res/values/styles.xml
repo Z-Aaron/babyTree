@@ -1,11 +1,11 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/primary_material_light</item>
+        <item name="colorPrimaryDark">@color/primary_dark_material_light</item>
+        <item name="colorAccent">@color/accent_material_light</item>
     </style>
 
     <style name="WelcomeTitle">
@@ -38,5 +38,12 @@
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/app_body_text_1</item>
     </style>
+
+    <style name="main_menu_animstyle">
+        <item name="android:windowEnterAnimation">@anim/photo_dialog_in_anim</item>
+        <item name="android:windowExitAnimation">@anim/photo_dialog_out_anim</item>
+    </style>
+
+    <style name="transparentFrameWindowStyle"></style>
 
 </resources>

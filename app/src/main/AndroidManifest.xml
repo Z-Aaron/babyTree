@@ -21,11 +21,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".welcome.WelcomeActivity"></activity>
-
+        <activity android:name=".welcome.WelcomeActivity"/>
+        <activity android:name=".ui.activity.UserCircleActivity"/>
+        <activity android:name=".ui.activity.SendTimeLineActivity2"/>
+        <activity android:name="."/>
         <activity
             android:name="com.lzy.imagepicker.ui.ImagePreviewDelActivity"
             android:theme="@style/ImagePickerThemeFullScreen"/>
+        <activity android:name=".ui.activity.SendTimeLineActivity"/>
+        <activity android:name=".ui.activity.UserLocationActivity"/>
     </application>
 
 </manifest>

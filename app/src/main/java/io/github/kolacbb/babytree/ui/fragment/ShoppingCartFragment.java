@@ -1,36 +1,31 @@
 package io.github.kolacbb.babytree.ui.fragment;
 
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
-
-import java.util.ArrayList;
+import android.widget.ListView;
 
 import io.github.kolacbb.babytree.R;
 import io.github.kolacbb.babytree.base.BaseFragment;
-import io.github.kolacbb.babytree.ui.adapter.ImagePickerAdapter;
-import io.github.kolacbb.babytree.ui.adapter.StoreAdapter;
+import io.github.kolacbb.babytree.ui.adapter.ShoppingCartAdapter;
 
 /**
- * 商城模块的Fragment 继承自BaseFragment，BaseFragment中封装了一部分方法，使Fragment更加易于使用
+ * 购物车模块的Fragment 继承自BaseFragment，BaseFragment中封装了一部分方法，使Fragment更加易于使用
  * Created by kolab on 2016/11/6.
  */
-public class StoreFragment extends BaseFragment implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class ShoppingCartFragment extends BaseFragment  implements View.OnClickListener, AdapterView.OnItemClickListener {
 
-    RecyclerView mRecyclerView;
-    StoreAdapter mSotreAdapter;
+    ListView mListView;
+    ShoppingCartAdapter mAdatper;
 
-    public static final String TAG = StoreFragment.class.getSimpleName();
-
+    public static final String TAG = ShoppingCartFragment.class.getSimpleName();
     /**
      * 外部使用该Fragment时，获取该Fragment实例的方法
      * 在这里不推荐使用在外部使用new 关键字获取该实例
      * @return: MyFragment 的一个新的实例
      */
-    public static StoreFragment getInstance() {
-        return new StoreFragment();
+    public static ShoppingCartFragment getInstance() {
+        return new ShoppingCartFragment();
     }
 
     /**
@@ -40,9 +35,8 @@ public class StoreFragment extends BaseFragment implements View.OnClickListener,
      */
     @Override
     public int getLayoutId() {
-        return R.layout.fragment_store;
+        return R.layout.fragment_shopping_cart;
     }
-
     /**
      * BaseFragment在将Fragment与xml视图绑定之后且当前Fragment所在的
      * Activity的onCreate方法调用完成之后，会调用该方法。
@@ -52,27 +46,22 @@ public class StoreFragment extends BaseFragment implements View.OnClickListener,
      */
     @Override
     public void afterCreate(Bundle savedInstanceState) {
-        mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        mRecyclerView.setHasFixedSize(true);
-        mSotreAdapter = new StoreAdapter();
-        mRecyclerView.setAdapter(mSotreAdapter);
+        mListView = (ListView) mRootView.findViewById(R.id.list_view);
+        mAdatper = new ShoppingCartAdapter();
+        mListView.setAdapter(mAdatper);
     }
 
     /**
-     * 从服务端获取母婴商品数据
+     * 从服务端获取购物车数据
      */
-    private void loadDate() {
+    public void loadData() {
 
     }
 
     /**
-     * 该方法为控件注册的监听，当布局中的控件被点击之后，该方法会被调用
-     * 通过获取View中的Id来判断真正被点击的控件，从而执行下一步操作
-     * @param v 被点击的View
+     * 计算出来商品总价格，并且更新view
      */
-    @Override
-    public void onClick(View v) {
+    public void calculatePrice() {
 
     }
 
@@ -86,6 +75,17 @@ public class StoreFragment extends BaseFragment implements View.OnClickListener,
      */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+    }
+
+    /**
+     * 该方法为控件注册的监听，当布局中的控件被点击之后，该方法会被调用
+     * 通过获取View中的Id来判断真正被点击的控件，从而执行下一步操作
+     * 该方法主要时，当点击结算时，跳转到结算界面
+     * @param v 被点击的View
+     */
+    @Override
+    public void onClick(View v) {
 
     }
 }

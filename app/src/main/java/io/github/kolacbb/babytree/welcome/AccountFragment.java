@@ -45,6 +45,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
+/**
+ * 显示登录注册的界面，调用登录注册的接口，完成登录注册相关逻辑
+ */
 public class AccountFragment extends Fragment {
     private static final String TAG = AccountFragment.class.getSimpleName();
 
@@ -58,6 +61,13 @@ public class AccountFragment extends Fragment {
 
     private int mState = SIGN_UP_MODE;
 
+    /**
+     * 初始化注册登录界面，加载xml布局，初始化相关控件注册监听。
+     * @param inflater Inflater 加载器
+     * @param container 父容器
+     * @param savedInstanceState 界面被销毁时所保存的数据
+     * @return 加载的当前fragment的跟布局
+     */
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -70,6 +80,10 @@ public class AccountFragment extends Fragment {
         return view;
     }
 
+    /**
+     * 初始化控件，从xml布局中通过id获取控件实例
+     * @param view
+     */
     public void initView(View view) {
         mEmailText = (EditText) view.findViewById(R.id.email);
         mPasswordText = (EditText) view.findViewById(R.id.password);
@@ -77,6 +91,11 @@ public class AccountFragment extends Fragment {
         mDescText = (EditText) view.findViewById(R.id.desc);
     }
 
+    /**
+     * 当用户点击了注册按钮时，调用该方法进行注册信息校验
+     * 如：邮箱格式，密码格式，用户名格式
+     * 校验通过则调用调用注册接口进行用户注册
+     */
     public void onPositiveButtonClicked() {
         if (mState == SIGN_UP_MODE) {
 
@@ -102,7 +121,11 @@ public class AccountFragment extends Fragment {
             updateViewState();
         }
     }
-
+    /**
+     * 当用户点击了登录按钮时，调用该方法进行登录信息校验
+     * 如：密码格式
+     * 校验通过则调用调用登录接口进行用户登录
+     */
     public void onNegativeButtonClicked() {
         if (mState == LOGIN_MODE) {
             Toast.makeText(getActivity(), "登录", Toast.LENGTH_SHORT).show();
@@ -120,6 +143,9 @@ public class AccountFragment extends Fragment {
 
     }
 
+    /**
+     * 该方法用于注册界面与登录页面的切换
+     */
     private void updateViewState() {
         if (mState == LOGIN_MODE) {
             mNameText.setVisibility(View.GONE);
@@ -130,6 +156,11 @@ public class AccountFragment extends Fragment {
         }
     }
 
+    /**
+     * 登录接口调用
+     * @param email 用户注册时的邮箱，即用户账户
+     * @param password 用户注册时的密码
+     */
     private void login(String email, String password) {
         String queryJson = new BmobRequestJsonBuilder()
                 .put("email", email)
@@ -159,6 +190,13 @@ public class AccountFragment extends Fragment {
                 });
     }
 
+    /**
+     * 用户注册接口调用
+     * @param email 用户邮箱，即用户账户
+     * @param password 用户密码
+     * @param name 用户姓名
+     * @param desc 用户描述
+     */
     private void signUp(String email, String password, String name, String desc) {
         // 待注册账号，返回结果只返回objectId，不必再次访问网络
         final Account account = new Account();
