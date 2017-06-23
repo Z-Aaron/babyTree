@@ -18,10 +18,10 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        if (AccountUtil.getAccount() == null) {
-//            startActivity(new Intent(this, WelcomeActivity.class));
-//            finish();
-//        }
+        if (AccountUtil.getAccount() == null) {
+            startActivity(new Intent(this, WelcomeActivity.class));
+            finish();
+        }
     }
 
     /**

@@ -30,6 +30,8 @@
             android:theme="@style/ImagePickerThemeFullScreen"/>
         <activity android:name=".ui.activity.SendTimeLineActivity"/>
         <activity android:name=".ui.activity.UserLocationActivity"/>
+        <activity android:name=".ui.activity.AddOrEditLocationActivity" />
+        <activity android:name=".ui.activity.SettleActivity" />
     </application>
 
 </manifest>

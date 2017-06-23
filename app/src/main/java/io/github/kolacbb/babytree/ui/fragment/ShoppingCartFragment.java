@@ -1,22 +1,34 @@
 package io.github.kolacbb.babytree.ui.fragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import io.github.kolacbb.babytree.R;
 import io.github.kolacbb.babytree.base.BaseFragment;
+import io.github.kolacbb.babytree.model.Commodity;
+import io.github.kolacbb.babytree.model.UserLocation;
+import io.github.kolacbb.babytree.ui.activity.SettleActivity;
+import io.github.kolacbb.babytree.ui.activity.UserLocationActivity;
 import io.github.kolacbb.babytree.ui.adapter.ShoppingCartAdapter;
+import io.github.kolacbb.babytree.util.CommodityUtils;
+import io.github.kolacbb.babytree.util.LocationUtils;
 
 /**
  * 购物车模块的Fragment 继承自BaseFragment，BaseFragment中封装了一部分方法，使Fragment更加易于使用
  * Created by kolab on 2016/11/6.
  */
-public class ShoppingCartFragment extends BaseFragment  implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class ShoppingCartFragment extends BaseFragment  implements View.OnClickListener, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
 
     ListView mListView;
-    ShoppingCartAdapter mAdatper;
+    ShoppingCartAdapter mAdapter;
+    TextView mPriceTv;
 
     public static final String TAG = ShoppingCartFragment.class.getSimpleName();
     /**
@@ -47,22 +59,32 @@ public class ShoppingCartFragment extends BaseFragment  implements View.OnClickL
     @Override
     public void afterCreate(Bundle savedInstanceState) {
         mListView = (ListView) mRootView.findViewById(R.id.list_view);
-        mAdatper = new ShoppingCartAdapter();
-        mListView.setAdapter(mAdatper);
+        mAdapter = new ShoppingCartAdapter();
+        mListView.setAdapter(mAdapter);
+        mListView.setOnItemLongClickListener(this);
+        mPriceTv = (TextView) mRootView.findViewById(R.id.price);
+        mRootView.findViewById(R.id.buy).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(), SettleActivity.class));
+            }
+        });
     }
 
-    /**
-     * 从服务端获取购物车数据
-     */
-    public void loadData() {
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        mAdapter.setmCommodities(CommodityUtils.getShoppingCartCommoditys());
+        mPriceTv.setText(String.valueOf(mAdapter.getTotalPrice()));
     }
 
-    /**
-     * 计算出来商品总价格，并且更新view
-     */
-    public void calculatePrice() {
-
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            mAdapter.setmCommodities(CommodityUtils.getShoppingCartCommoditys());
+            mPriceTv.setText(String.valueOf(mAdapter.getTotalPrice()));
+        }
     }
 
     /**
@@ -86,6 +108,22 @@ public class ShoppingCartFragment extends BaseFragment  implements View.OnClickL
      */
     @Override
     public void onClick(View v) {
+        startActivity(new Intent(getContext(), SettleActivity.class));
+    }
 
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+        final Commodity co = mAdapter.getItem(position);
+        new AlertDialog.Builder(getContext())
+                .setItems(new String[]{"删除"}, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        CommodityUtils.removeFromShoppingCart(co);
+                        mAdapter.setmCommodities(CommodityUtils.getShoppingCartCommoditys());
+                        mPriceTv.setText(String.valueOf(mAdapter.getTotalPrice()));
+                    }
+                })
+                .show();
+        return true;
     }
 }

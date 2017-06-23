@@ -3,11 +3,14 @@ package io.github.kolacbb.babytree.ui.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import io.github.kolacbb.babytree.R;
 import io.github.kolacbb.babytree.base.BaseFragment;
+import io.github.kolacbb.babytree.model.Account;
 import io.github.kolacbb.babytree.ui.activity.UserCircleActivity;
 import io.github.kolacbb.babytree.ui.activity.UserLocationActivity;
+import io.github.kolacbb.babytree.util.AccountUtil;
 
 /**
  * 我模块的Fragment 继承自BaseFragment，BaseFragment中封装了一部分方法，使Fragment更加易于使用
@@ -47,6 +50,14 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
     public void afterCreate(Bundle savedInstanceState) {
         mRootView.findViewById(R.id.user_circle).setOnClickListener(this);
         mRootView.findViewById(R.id.user_location).setOnClickListener(this);
+        mRootView.findViewById(R.id.logout).setOnClickListener(this);
+
+        TextView name = (TextView) mRootView.findViewById(R.id.user_name);
+        TextView desc = (TextView) mRootView.findViewById(R.id.user_desc);
+
+        Account account = AccountUtil.getAccount();
+        name.setText(account.getName());
+        desc.setText(account.getDesc());
     }
 
     /**
@@ -64,6 +75,10 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
                 break;
             case R.id.user_location:
                 startActivity(new Intent(getContext(), UserLocationActivity.class));
+                break;
+            case R.id.logout:
+                AccountUtil.logout();
+                getActivity().finish();
                 break;
         }
     }

@@ -28,7 +28,8 @@ public class AccountUtil {
             synchronized (AccountUtil.class) {
                 if (mAccount == null) {
                     String json = SpUtils.find(ACCOUNT_INFO);
-                    mAccount = mGson.fromJson(json, Account.class);
+                    if (!TextUtils.isEmpty(json))
+                        mAccount = mGson.fromJson(json, Account.class);
                 }
             }
         }
@@ -47,4 +48,9 @@ public class AccountUtil {
         return loadAccountInfo();
     }
 
+    public static void logout() {
+        SpUtils.delete(ACCOUNT_INFO);
+        mAccount = null;
+        //System.exit(0);
+    }
 }

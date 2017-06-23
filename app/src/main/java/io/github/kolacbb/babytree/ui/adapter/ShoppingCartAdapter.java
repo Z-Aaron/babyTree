@@ -4,10 +4,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.List;
 
 import io.github.kolacbb.babytree.R;
+import io.github.kolacbb.babytree.model.Commodity;
 import io.github.kolacbb.babytree.model.ShoppingCart;
 
 /**
@@ -16,22 +19,21 @@ import io.github.kolacbb.babytree.model.ShoppingCart;
 
 public class ShoppingCartAdapter extends BaseAdapter {
 
-    List<ShoppingCart> mShoppingCarts;
+    List<Commodity> mCommodities;
 
-    public void setmShoppingCarts(List<ShoppingCart> mShoppingCarts) {
-        this.mShoppingCarts = mShoppingCarts;
+    public void setmCommodities(List<Commodity> mCommodities) {
+        this.mCommodities = mCommodities;
         notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
-        return 1;
-        //return mShoppingCarts == null ? 0 : mShoppingCarts.size();
+        return mCommodities == null ? 0 : mCommodities.size();
     }
 
     @Override
-    public ShoppingCart getItem(int position) {
-        return mShoppingCarts.get(mShoppingCarts.size() - position);
+    public Commodity getItem(int position) {
+        return mCommodities.get(mCommodities.size() - position -1);
     }
 
     @Override
@@ -42,7 +44,23 @@ public class ShoppingCartAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View root = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_shopping_cart, null);
+        Commodity commodity = getItem(position);
+        ImageView icon = (ImageView) root.findViewById(R.id.icon);
+        TextView title = (TextView) root.findViewById(R.id.title);
+        TextView price = (TextView) root.findViewById(R.id.price);
+
+        title.setText(commodity.getTitle());
+        price.setText(String.valueOf(commodity.getPrice()));
 
         return root;
+    }
+
+    public float getTotalPrice() {
+        float total = 0;
+        if (mCommodities != null)
+            for (Commodity c : mCommodities) {
+                total += c.getPrice();
+            }
+        return total;
     }
 }

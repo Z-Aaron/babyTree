@@ -1,6 +1,10 @@
 package io.github.kolacbb.babytree.net.service;
 
+import java.util.List;
+
 import io.github.kolacbb.babytree.model.Article;
+import io.github.kolacbb.babytree.model.Commodity;
+import io.github.kolacbb.babytree.model.Result;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -11,9 +15,13 @@ import retrofit2.http.Query;
 
 public interface BusinessService {
 
-    /**
-     * 获取主页数据 (include后跟表名，该表所有数据会返回，在此处不应该动态变化)
-     */
-    @GET("article?include=head_image")
-    Call<Article> getHomePageFeed();
+    @GET("/1/classes/article")
+    Call<Result<Article>> getArticles();
+
+
+    @GET("/1/classes/Commodities")
+    Call<Result<Commodity>> getCommodities();
+
+
+
 }

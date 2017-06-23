@@ -10,12 +10,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import com.squareup.picasso.Picasso;
+
+import java.util.List;
+
 import io.github.kolacbb.babytree.R;
+import io.github.kolacbb.babytree.model.Article;
 
 /**
+ * 用于展示Feed页面的Adapter，可以展示三种不不同的布局方式
+ * 用于业务务求扩展
  * Created by kolab on 2016/11/6.
  */
-
 public class HomeAdapter extends RecyclerView.Adapter {
 
     private static final int TYPE_IMAGE = 0x30;
@@ -25,11 +31,30 @@ public class HomeAdapter extends RecyclerView.Adapter {
     private Context mCtx;
     private LayoutInflater mInflater;
 
+    List<Article> articles;
+
+    public void setArticles(List<Article> articles) {
+        this.articles = articles;
+        notifyDataSetChanged();
+    }
+
+    /**
+     * 在adapter创建时，需要传入context用来初始化
+     * @param context 上下文环境
+     */
     public HomeAdapter(Context context) {
         mCtx = context;
         mInflater = LayoutInflater.from(context);
     }
 
+    /**
+     * 创建view holder的方法，view holder可以加快item加载速度
+     * find view 操作是一个比较耗时的操作
+     * 使用view holder 可以有效的减少find view 的耗时
+     * @param parent item的parent view
+     * @param viewType view 的类型，不用的view 使用不同的view holder
+     * @return 创建出的view holder
+     */
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_IMAGE) {
@@ -41,6 +66,13 @@ public class HomeAdapter extends RecyclerView.Adapter {
         }
     }
 
+    /**
+     * 用于绑定不同的view 和view holder
+     * 1. 通过position 判断该view hold 的类型
+     * 2. 获取数据，将数据与view holder 中的类型绑定
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof HeadImageViewHolder) {
@@ -48,26 +80,41 @@ public class HomeAdapter extends RecyclerView.Adapter {
         } else if (holder instanceof MenuViewHolder) {
 
         } else {
-
+            Article article = articles.get(position);
+            ArticleViewHolder vh = (ArticleViewHolder) holder;
+            vh.title.setText(article.getTitle());
+            Picasso.with(mCtx).load(article.getImage()).into(vh.image);
         }
     }
 
+    /**
+     * 获取item的数量，一般为list的数量，当list为null时，返回数量应为0
+     * @return item总数
+     */
     @Override
     public int getItemCount() {
-        return 8;
+        return articles == null ? 0 : articles.size();
     }
 
+    /**
+     * 根据位置获取该位置的类型
+     * @param position item的位置
+     * @return 类型
+     */
     @Override
     public int getItemViewType(int position) {
-        if (position == 0) {
-            return TYPE_IMAGE;
-        } else if (position == 1) {
-            return TYPE_BOX_MENU;
-        } else {
+//        if (position == 0) {
+//            return TYPE_IMAGE;
+//        } else if (position == 1) {
+//            return TYPE_BOX_MENU;
+//        } else {
             return TYPE_ARTICLE;
-        }
+//        }
     }
 
+    /**
+     * Feed页展示头图的View holder 类型为TYPE_IMAGE
+     */
     private class HeadImageViewHolder extends RecyclerView.ViewHolder {
         ViewPager pager;
         HeadImageViewHolder(View itemView) {
@@ -76,6 +123,10 @@ public class HomeAdapter extends RecyclerView.Adapter {
         }
     }
 
+    /**
+     * Feed 也main用于展示各种类型不同type的viewholder
+     * 可以增加不同的功能选项
+     */
     private class MenuViewHolder extends RecyclerView.ViewHolder {
         View calendarBtn; // 女性日历
         View diaryBtn; // 时光轴日历
@@ -88,6 +139,9 @@ public class HomeAdapter extends RecyclerView.Adapter {
         }
     }
 
+    /**
+     * Feed页母婴文章的view holder 类型为TYPE_ARTICLE
+     */
     private class ArticleViewHolder extends RecyclerView.ViewHolder {
         TextView title;
         ImageView image;
@@ -98,6 +152,9 @@ public class HomeAdapter extends RecyclerView.Adapter {
         }
     }
 
+    /**
+     * 用于头图滚动的pager adapter
+     */
     private class ImagePagerAdapter extends android.support.v4.view.PagerAdapter {
 
         @Override
